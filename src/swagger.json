@@ -1,0 +1,294 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User System Documentation",
+        "description": "This is an API for user control.",
+        "version": "1.0.0",
+        "contact": {
+            "email": "natan.souza@ccc.ufcg.edu.br"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": ["User"],
+                "summary": "Create a user",
+                "description": "Create a new user in the application",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "Date"
+                                        },
+                                        "updated_at": {
+                                            "type": "Date"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "id": "9af408ef-e414-44ff-81b3-06af2c00b731",
+                                    "name": "Natan",
+                                    "admin": false,
+                                    "email": "natan@usersystem.com",
+                                    "created_at": "2021-09-28T20:55:02.778Z",
+                                    "updated_at": "2021-09-28T20:55:02.778Z"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Email is already taken"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["User"],
+                "summary": "List all users",
+                "description": "List all application users",
+                "parameters": {
+                    "in": "header",
+                    "name": "user_id",
+                    "schema": {
+                        "type": "string($uuid)"
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "Date"
+                                            },
+                                            "updated_at": {
+                                                "type": "Date"
+                                            }
+                                        },
+                                        "example": {
+                                            "id": "9af408ef-e414-44ff-81b3-06af2c00b731",
+                                            "name": "Natan",
+                                            "admin": true,
+                                            "email": "natan@usersystem.com",
+                                            "created_at": "2021-09-28T20:55:02.778Z",
+                                            "updated_at": "2021-09-28T20:55:02.778Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User without permission or not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "This user is not an admin!"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/:user_id": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Returns a specific user",
+                "description": "Returns a specific user of the application",
+                "parameters": {
+                    "in": "path",
+                    "name": "user_id",
+                    "schema": {
+                        "type": "string($uuid)"
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "Date"
+                                            },
+                                            "updated_at": {
+                                                "type": "Date"
+                                            }
+                                        },
+                                        "example": {
+                                            "id": "9af408ef-e414-44ff-81b3-06af2c00b731",
+                                            "name": "Natan",
+                                            "admin": true,
+                                            "email": "natan@usersystem.com",
+                                            "created_at": "2021-09-28T20:55:02.778Z",
+                                            "updated_at": "2021-09-28T20:55:02.778Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "Id doesn't exist!"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/:user_id/admin": {
+            "patch": {
+                "tags": ["User"],
+                "summary": "Turn a user into admin",
+                "description": "Turn a user of the application into admin",
+                "parameters": {
+                    "in": "path",
+                    "name": "user_id",
+                    "schema": {
+                        "type": "string($uuid)"
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "Date"
+                                            },
+                                            "updated_at": {
+                                                "type": "Date"
+                                            }
+                                        },
+                                        "example": {
+                                            "id": "9af408ef-e414-44ff-81b3-06af2c00b731",
+                                            "name": "Natan",
+                                            "admin": true,
+                                            "email": "natan@usersystem.com",
+                                            "created_at": "2021-09-28T20:55:02.778Z",
+                                            "updated_at": "2021-09-28T20:55:02.778Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "Id doesn't exist!"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }    
+}
